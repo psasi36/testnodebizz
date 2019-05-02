@@ -52,11 +52,19 @@ app.use(helmet.referrerPolicy({
 	policy: "no-referrer"
 }));
 
-passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
+var services = xsenv.getServices({
 	uaa: {
 		tag: "xsuaa"
 	}
-}).uaa));
+}).uaa;
+
+passport.use(new JWTStrategy(services));
+
+// passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
+// 	uaa: {
+// 		tag: "xsuaa"
+// 	}
+// }).uaa));
 app.use(logging.middleware({
 	appContext: appContext,
 	logNetwork: true

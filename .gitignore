@@ -26,5 +26,6 @@ mergedManifestDescriptor.json
 APIExternalProducer.js
 .*/APIExternalProducer.js
 /mta_archives/
+*.mtar
 preview.json
 cp.project.properties.json

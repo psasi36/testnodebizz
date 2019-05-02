@@ -15,12 +15,6 @@ modules:
       - name: TestNodeBizz_html5_repo_runtime
       - name: TestNodeBizz-uaa
       - name: TestNodeBizz-dest
-      - name: TestNodeBizz-xsjs_api
-        group: destinations
-        properties:
-          name: TestNodeBizz-xsjs_api
-          url: '~{url}'
-          forwardAuthToken: true
       - name: TestNodeBizz-srv_api
         group: destinations
         properties:
