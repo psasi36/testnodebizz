@@ -1,0 +1,57 @@
+{
+	"name": "TestNodeBizz-srv",
+	"description": "Generated from ../package.json, do not change!",
+	"version": "1.0.0",
+	"dependencies": {
+		"@sap/cds": "^3.7.1",
+		"express": "^4.16.4",
+		"hdb": "^0.17.0",
+		"@sap/xssec": "2.1.15",
+		"@sap/xsenv": "1.2.9",
+		"@sap/hdbext": "~5.0",
+		"@sap/hana-client": "~2.3",
+		"@sap/textbundle": "latest",
+		"@sap/logging": "~4.0",
+		"@sap/audit-logging": "2.2.4",
+		"nodemailer": "~4.6",
+		"passport": "~0.4.0",
+		"async": "latest",
+		"ws": "~6.1",
+		"accept-language-parser": "latest",
+		"node-xlsx": "~0.12",
+		"node-zip": "~1.1.1",
+		"xmldoc": "~1.1.2",
+		"winston": "~3.1",
+		"body-parser": "~1.18",
+		"elementtree": "latest",
+		"then-request": "latest",
+		"compression": "~1.7",
+		"helmet": "~3.15"
+	},
+	"engines": {
+		"node": "^8.9",
+		"npm": "^6"
+	},
+	"devDependencies": {},
+	"scripts": {
+		"postinstall": "cds build/all --project .. --clean",
+		"start": "node server.js"
+	},
+	"i18n": {
+		"folders": [
+			"_i18n"
+		]
+	},
+	"private": true,
+	"cds": {
+		"data": {
+			"driver": "hana"
+		},
+		"requires": {
+			"db": {
+				"kind": "hana",
+				"model": "gen/csn.json"
+			}
+		}
+	}
+}

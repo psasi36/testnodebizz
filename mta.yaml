@@ -1,0 +1,132 @@
+ID: TestNodeBizz
+_schema-version: '2.1'
+description: Test Node JS Business App
+parameters:
+  deploy_mode: html5-repo
+version: 1.0.1
+modules:
+  - name: TestNodeBizz_appRouter
+    type: approuter.nodejs
+    path: TestNodeBizz_appRouter
+    parameters:
+      disk-quota: 512M
+      memory: 512M
+    requires:
+      - name: TestNodeBizz_html5_repo_runtime
+      - name: TestNodeBizz-uaa
+      - name: TestNodeBizz-dest
+      - name: TestNodeBizz-xsjs_api
+        group: destinations
+        properties:
+          name: TestNodeBizz-xsjs_api
+          url: '~{url}'
+          forwardAuthToken: true
+      - name: TestNodeBizz-srv_api
+        group: destinations
+        properties:
+          name: TestNodeBizz-srv_api
+          url: '~{url}'
+          forwardAuthToken: true
+      - name: TestNodeBizz-portal_resources
+  - name: TestNodeBizz_ui_deployer
+    type: com.sap.html5.application-content
+    path: TestNodeBizz_ui_deployer
+    parameters:
+      disk-quota: 1024M
+      memory: 1024M
+      sizeLimit: 16
+    requires:
+      - name: TestNodeBizz_html5_repo_host
+    build-parameters:
+      requires:
+        - name: TestNodeBizz-web
+          artifacts:
+            - './*'
+          target-path: resources/web
+  - name: TestNodeBizz-db
+    type: hdb
+    path: db
+    parameters:
+      memory: 1024M
+      disk-quota: 1024M
+    requires:
+      - name: TestNodeBizz-hdi-container
+  - name: TestNodeBizz-srv
+    type: nodejs
+    path: srv
+    parameters:
+      memory: 2048M
+      disk-quota: 2048M
+    provides:
+      - name: TestNodeBizz-srv_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: TestNodeBizz-hdi-container
+      - name: TestNodeBizz-uaa
+  - name: TestNodeBizz-web
+    type: html5
+    path: web
+    parameters:
+      disk-quota: 1024M
+      memory: 1024M
+    build-parameters:
+      builder: grunt
+    requires:
+      - name: TestNodeBizz-srv_api
+        group: destinations
+        properties:
+          name: TestNodeBizz-srv_api
+          url: '~{url}'
+          forwardAuthToken: true
+  - name: TestNodeBizz-xsjs
+    type: nodejs
+    path: xsjs
+    provides:
+      - name: TestNodeBizz-xsjs_api
+        properties:
+          url: '${default-url}'
+          forwardAuthToken: true
+  - name: TestNodeBizz-flp
+    type: com.sap.portal.content
+    path: flp
+    parameters:
+      stack: cflinuxfs3
+      memory: 128M
+      buildpack: 'https://github.com/cloudfoundry/nodejs-buildpack/releases/download/v1.6.39/nodejs-buildpack-cflinuxfs3-v1.6.39.zip'
+    requires:
+      - name: TestNodeBizz-portal_resources
+      - name: TestNodeBizz-uaa
+      - name: TestNodeBizz_html5_repo_host
+      - name: TestNodeBizz_ui_deployer
+resources:
+  - name: TestNodeBizz_html5_repo_runtime
+    parameters:
+      service-plan: app-runtime
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
+  - name: TestNodeBizz_html5_repo_host
+    parameters:
+      service-plan: app-host
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
+  - name: TestNodeBizz-hdi-container
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-name: '${service-name}'
+  - name: TestNodeBizz-uaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+  - name: TestNodeBizz-dest
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service
+  - name: TestNodeBizz-portal_resources
+    parameters:
+      service-plan: standard
+      service: portal
+    type: org.cloudfoundry.managed-service

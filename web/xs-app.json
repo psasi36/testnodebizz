@@ -1,0 +1,37 @@
+{
+	"welcomeFile": "/index.html",
+	"authenticationMethod": "route",
+	"logout": {
+		"logoutEndpoint": "/do/logout"
+	},
+	"routes": [{
+		"source": "(.*)(.xsjs)",
+		"destination": "TestNodeBizz-xsjs_api",
+		"csrfProtection": false,
+		"authenticationType": "xsuaa"
+	}, {
+		"source": "(.*)(.xsodata)",
+		"destination": "TestNodeBizz-xsjs_api",
+		"authenticationType": "xsuaa"
+	}, {
+		"source": "/catalog/(.*)",
+		"destination": "TestNodeBizz-srv_api",
+		"csrfProtection": true,
+		"authenticationType": "xsuaa"
+	}, {
+		"source": "/odata/v4/(.*)",
+		"destination": "TestNodeBizz-srv_api",
+		"csrfProtection": true,
+		"authenticationType": "xsuaa"
+	}, {
+		"source": "/node(.*)",
+		"destination": "TestNodeBizz-srv_api",
+		"csrfProtection": true,
+		"authenticationType": "xsuaa"
+	}, {
+		"source": "^(.*)$",
+		"target": "$1",
+		"service": "html5-apps-repo-rt",
+		"authenticationType": "xsuaa"
+	}]
+}

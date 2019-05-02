@@ -1,0 +1,1 @@
+/*eslint no-console: 0, no-unused-vars: 0, no-shadow: 0, newcap: 0*//*eslint-env node, es6 */"use strict";var express = require("express");var async = require("async");module.exports = function () {	var app = express.Router();	//Hello Router	app.get("/hi", (req, res) => {		res.send("Hello Customer Node.js");	});	return app;};
